@@ -7,9 +7,9 @@ go run main.go
 
 ## Controls
 You can select cells that are alive at lifecycle zero.
-`w` - up
-`a` - left
-`s` - down
-`d` - right
-`f` - create or kill cell
-`x` - start simulation
+- `w` - up
+- `a` - left
+- `s` - down
+- `d` - right
+- `f` - create or kill cell
+- `x` - start simulation
