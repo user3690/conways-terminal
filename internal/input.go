@@ -1,4 +1,4 @@
-package terminal
+package internal
 
 import (
 	"golang.org/x/term"
@@ -21,7 +21,7 @@ func NewKeyboard() (*KeyboardReader, error) {
 	}, nil
 }
 
-func (reader *KeyboardReader) keyPress() (key []byte, err error) {
+func (reader *KeyboardReader) KeyPress() (key []byte, err error) {
 	key = make([]byte, 1)
 	_, err = os.Stdin.Read(key)
 	if err != nil {
@@ -31,6 +31,6 @@ func (reader *KeyboardReader) keyPress() (key []byte, err error) {
 	return key, nil
 }
 
-func (reader *KeyboardReader) restore() error {
+func (reader *KeyboardReader) Restore() error {
 	return term.Restore(int(os.Stdin.Fd()), reader.oldState)
 }

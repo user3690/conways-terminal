@@ -1,7 +1,8 @@
 package main
 
 import (
-	"conways-terminal/pkg/terminal"
+	"conways-terminal/internal"
+	"conways-terminal/pkg/conways"
 	"fmt"
 	"os"
 	"os/signal"
@@ -13,14 +14,14 @@ func main() {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT)
 
-	terminal.HideCursor()
-	terminal.ClearScreen()
+	internal.HideCursor()
+	internal.ClearScreen()
 
 	keystrokeTicker := time.NewTicker(1 * time.Millisecond)
+	gameTicker := time.NewTicker(500 * time.Millisecond)
 	renderTicker := time.NewTicker(40 * time.Millisecond)
 
-	renderPipeline := terminal.NewRenderPipeline()
-	win, err := terminal.NewWindow()
+	game, err := conways.NewGameOfLife()
 	if err != nil {
 		panic(err)
 	}
@@ -28,14 +29,21 @@ func main() {
 	go func() {
 		for {
 			<-renderTicker.C
-			renderPipeline.Render(win.Area())
+			game.Render()
+		}
+	}()
+
+	go func() {
+		for {
+			<-gameTicker.C
+			game.Simulate()
 		}
 	}()
 
 	go func() {
 		for {
 			<-keystrokeTicker.C
-			done, err := win.Move()
+			done, err := game.Controls()
 			if err != nil {
 				panic(err.Error())
 			}
@@ -51,8 +59,8 @@ func main() {
 	for {
 		select {
 		case <-sigChan:
-			terminal.ShowCursor()
-			terminal.ClearScreen()
+			internal.ShowCursor()
+			internal.ClearScreen()
 
 			fmt.Println("exit")
 			os.Exit(0)
