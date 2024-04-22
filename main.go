@@ -19,7 +19,7 @@ func main() {
 
 	keystrokeTicker := time.NewTicker(10 * time.Millisecond)
 	gameTicker := time.NewTicker(500 * time.Millisecond)
-	renderTicker := time.NewTicker(100 * time.Millisecond)
+	renderTicker := time.NewTicker(50 * time.Millisecond)
 
 	game, err := conways.NewGameOfLife()
 	if err != nil {

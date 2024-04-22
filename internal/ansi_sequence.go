@@ -1,6 +1,39 @@
 package internal
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+)
+
+type RenderBuffer struct {
+	buffer *bytes.Buffer
+}
+
+func NewRenderBuffer() RenderBuffer {
+	return RenderBuffer{
+		buffer: bytes.NewBuffer([]byte{}),
+	}
+}
+
+func (tr *RenderBuffer) Reset() {
+	tr.buffer.Reset()
+}
+
+func (tr *RenderBuffer) WriteTo(str string) {
+	tr.buffer.Write([]byte(str))
+}
+
+func (tr *RenderBuffer) ClearToEnd() {
+	tr.buffer.Write([]byte("\033[0J"))
+}
+
+func (tr *RenderBuffer) MoveTo(x, y int) {
+	tr.buffer.Write([]byte(fmt.Sprintf("\033[%d;%dH", y, x)))
+}
+
+func (tr *RenderBuffer) Read() string {
+	return string(tr.buffer.Bytes())
+}
 
 // ClearScreen clears the screen.
 func ClearScreen() {

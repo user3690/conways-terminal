@@ -12,10 +12,11 @@ const (
 type PlayingField = [][]Cell
 
 type GameOfLife struct {
-	keyboard  *internal.KeyboardReader
-	cursorPos internal.Position
-	area      PlayingField
-	simulate  bool
+	renderBuffer internal.RenderBuffer
+	keyboard     *internal.KeyboardReader
+	cursorPos    internal.Position
+	area         PlayingField
+	simulate     bool
 }
 
 func NewGameOfLife() (GameOfLife, error) {
@@ -43,9 +44,10 @@ func NewGameOfLife() (GameOfLife, error) {
 	}
 
 	return GameOfLife{
-		keyboard:  reader,
-		cursorPos: initialCursorPos,
-		area:      newPlayingField,
+		renderBuffer: internal.NewRenderBuffer(),
+		keyboard:     reader,
+		cursorPos:    initialCursorPos,
+		area:         newPlayingField,
 	}, nil
 }
 
