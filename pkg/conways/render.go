@@ -3,21 +3,24 @@ package conways
 import (
 	"conways-terminal/internal"
 	"fmt"
+	"strings"
 )
 
 func (game *GameOfLife) Render() {
-	// clear area
-	for y := range game.area {
-		internal.MoveTo(0, y+1)
-		internal.ClearLine()
-	}
+	var lineToRender []string
 
 	// render new area
-	for y, x := range game.area {
+	for y, cells := range game.area {
 		internal.MoveTo(0, y+1)
-		for _, cell := range x {
-			fmt.Print(cell.String())
+
+		lineToRender = make([]string, width)
+		for x, cell := range cells {
+			lineToRender[x] = cell.String()
 		}
+
+		fmt.Print(strings.Join(lineToRender, ""))
+		// clear last bits
+		internal.ClearToEnd()
 	}
 
 	internal.MoveTo(0, len(game.area)+2)
@@ -29,7 +32,7 @@ func (game *GameOfLife) Render() {
 	internal.MoveTo(0, len(game.area)+5)
 	fmt.Print("'a' - left")
 	internal.MoveTo(0, len(game.area)+6)
-	fmt.Print("'f' - awake or kill cell")
+	fmt.Print("'f' - create or kill cell")
 	internal.MoveTo(0, len(game.area)+7)
 	fmt.Print("'x' - start simulation")
 }

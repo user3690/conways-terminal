@@ -17,9 +17,9 @@ func main() {
 	internal.HideCursor()
 	internal.ClearScreen()
 
-	keystrokeTicker := time.NewTicker(1 * time.Millisecond)
+	keystrokeTicker := time.NewTicker(10 * time.Millisecond)
 	gameTicker := time.NewTicker(500 * time.Millisecond)
-	renderTicker := time.NewTicker(40 * time.Millisecond)
+	renderTicker := time.NewTicker(100 * time.Millisecond)
 
 	game, err := conways.NewGameOfLife()
 	if err != nil {
